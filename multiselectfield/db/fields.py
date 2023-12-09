@@ -20,7 +20,6 @@ from django import VERSION
 
 from django.db import models
 from django.utils.text import capfirst
-from django.utils.encoding import python_2_unicode_compatible
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
@@ -47,7 +46,6 @@ def add_metaclass(metaclass):
     return wrapper
 
 
-@python_2_unicode_compatible
 class MSFList(list):
 
     def __init__(self, choices, *args, **kwargs):

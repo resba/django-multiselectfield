@@ -14,24 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
-from django import VERSION
 from django.conf import settings
-try:
-    from django.conf.urls import include, url
-
-    # Compatibility for Django > 1.8
-    def patterns(prefix, *args):
-        if VERSION < (1, 9):
-            from django.conf.urls import patterns as django_patterns
-            return django_patterns(prefix, *args)
-        elif prefix != '':
-            raise NotImplementedError("You need to update your URLConf for "
-                                      "Django 1.10, or tweak it to remove the "
-                                      "prefix parameter")
-        else:
-            return list(args)
-except ImportError:  # Django < 1.4
-    from django.conf.urls.defaults import include, patterns, url
+from django.urls.conf import include, path
 
 from django.contrib import admin
 from django.views.static import serve
@@ -42,15 +26,10 @@ js_info_dict = {
     'packages': ('django.conf',),
 }
 
-urlpatterns = patterns(
-    '',
-    url(r'^', include('app.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-)
-
-urlpatterns += patterns(
-    '',
-    url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
+urlpatterns = [
+    path('', include('app.urls')),
+    path('admin/', admin.site.urls),
+    path(settings.MEDIA_URL[1:] + '<path:path>',
         serve,
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-)
+]
