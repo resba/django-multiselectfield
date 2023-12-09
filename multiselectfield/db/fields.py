@@ -65,14 +65,14 @@ class MultiSelectField(models.CharField):
         self.max_choices = kwargs.pop('max_choices', None)
         super(MultiSelectField, self).__init__(*args, **kwargs)
         self.max_length = get_max_length(self.choices, self.max_length)
-        self.validators[0] = MaxValueMultiFieldValidator(self.max_length)
+        self.validators.append(MaxValueMultiFieldValidator(self.max_length))
         if self.min_choices is not None:
             self.validators.append(MinChoicesValidator(self.min_choices))
         if self.max_choices is not None:
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
     def _get_flatchoices(self):
-        lst = super(MultiSelectField, self)._get_flatchoices()
+        lst = super().flatchoices
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
@@ -100,7 +100,7 @@ class MultiSelectField(models.CharField):
         return choices_selected
 
     def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
+        value = self.value_from_object(obj)
         return self.get_prep_value(value)
 
     def validate(self, value, model_instance):
@@ -145,7 +145,7 @@ class MultiSelectField(models.CharField):
             return value if isinstance(value, list) else MSFList(choices, value.split(','))
         return MSFList(choices, [])
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         if value is None:
             return value
         return self.to_python(value)
