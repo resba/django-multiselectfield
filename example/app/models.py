@@ -39,21 +39,21 @@ TAGS_CHOICES = (
     ('nice',        _('Nice')),         # noqa: E241
 )
 
-PROVINCES = (
+PROVINCES = [
     ('AB', _("Alberta")),
     ('BC', _("British Columbia")),
-)
+]
 
-STATES = (
+STATES = [
     ('AK', _("Alaska")),
     ('AL', _("Alabama")),
     ('AZ', _("Arizona")),
-)
+]
 
-PROVINCES_AND_STATES = (
+PROVINCES_AND_STATES = [
     (_("Canada - Provinces"), PROVINCES),
     (_("USA - States"),       STATES),  # noqa: E241
-)
+]
 
 
 class Book(models.Model):
