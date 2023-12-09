@@ -53,8 +53,8 @@ class MSFList(list):
         super(MSFList, self).__init__(*args, **kwargs)
 
     def __str__(msgl):
-        lst = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
-        return u', '.join([string_type(s) for s in lst])
+        l = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
+        return u', '.join([string_type(s) for s in l])
 
 
 class MultiSelectField(models.CharField):
@@ -72,7 +72,7 @@ class MultiSelectField(models.CharField):
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
     def _get_flatchoices(self):
-        lst = super().flatchoices
+        l = super().flatchoices
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
@@ -81,7 +81,7 @@ class MultiSelectField(models.CharField):
             def __bool__(self):
                 return False
             __nonzero__ = __bool__
-        return MSFFlatchoices(lst)
+        return MSFFlatchoices(l)
     flatchoices = property(_get_flatchoices)
 
     def get_choices_default(self):
@@ -181,6 +181,6 @@ if VERSION < (1, 8):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], [r'^multiselectfield\.db.fields\.MultiSelectField'])
+    add_introspection_rules([], ['^multiselectfield\.db.fields\.MultiSelectField'])
 except ImportError:
     pass

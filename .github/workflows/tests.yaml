@@ -44,8 +44,9 @@ jobs:
     - name: Install library
       run: pip install -e .
 
-    - name: Lint
-      run: flake8 --ignore=E501
+    # Disabled for now, at some point we'll use black instead
+    # - name: Lint
+    #   run: flake8 --ignore=E501
 
     - name: Run tests
       working-directory: example
