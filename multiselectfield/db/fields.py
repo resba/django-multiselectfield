@@ -71,17 +71,6 @@ class MultiSelectField(models.CharField):
         if self.max_choices is not None:
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
-    def _get_flatchoices(self):
-        l = super().flatchoices
-
-        class MSFFlatchoices(list):
-            # Used to trick django.contrib.admin.utils.display_for_field into
-            # not treating the list of values as a dictionary key (which errors
-            # out)
-            def __bool__(self):
-                return False
-            __nonzero__ = __bool__
-        return MSFFlatchoices(l)
     flatchoices = property(_get_flatchoices)
 
     def get_choices_default(self):
