@@ -71,8 +71,6 @@ class MultiSelectField(models.CharField):
         if self.max_choices is not None:
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
-    flatchoices = property(_get_flatchoices)
-
     def get_choices_default(self):
         return self.get_choices(include_blank=False)
 
